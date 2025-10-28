@@ -1,0 +1,36 @@
+{
+  "name": "@dropinblog/dropinblog-api-client",
+  "version": "1.0.0",
+  "description": "A TypeScript client for the Dropinblog API",
+  "homepage": "https://github.com/DropInBlog/react-api#readme",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "pack": "rm -f dropinblog-*.tgz && npm run build && npm pack",
+    "pub": "npm run build && npm publish --access public",
+    "bump:patch": "npm version patch",
+    "bump:minor": "npm version minor",
+    "bump:major": "npm version major"
+  },
+  "bugs": {
+    "url": "https://github.com/DropInBlog/react-api/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DropInBlog/react-api.git"
+  },
+  "keywords": [
+    "dropinblog",
+    "api",
+    "client"
+  ],
+  "author": "DropInBlog",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

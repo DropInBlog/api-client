@@ -1,0 +1,30 @@
+# Ignore source files
+src/
+tsup.config.ts
+tsconfig.json
+*.tgz
+
+# Ignore config and tooling files
+.vscode/
+*.log
+.env
+*.env.*
+
+# Ignore tests
+test/
+__tests__/
+*.test.ts
+*.spec.ts
+
+# Ignore node_modules (just in case)
+node_modules/
+
+# Ignore lockfiles (they are not needed in published packages)
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Ignore editor junk
+.DS_Store
+*.swp
+*.swo
