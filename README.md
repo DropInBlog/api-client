@@ -1,7 +1,7 @@
 # DropInBlog API Client
 
-[![NPM version](https://img.shields.io/npm/v/@dropinblog/dropinblog-api-client.svg)](https://www.npmjs.com/package/@dropinblog/dropinblog-api-client)
-[![License](https://img.shields.io/npm/l/@dropinblog/dropinblog-api-client.svg)](https://github.com/DropInBlog/react-api/blob/main/LICENSE)
+[![NPM version](https://img.shields.io/npm/v/@dropinblog/api-client.svg)](https://www.npmjs.com/package/@dropinblog/api-client)
+[![License](https://img.shields.io/npm/l/@dropinblog/api-client.svg)](https://github.com/DropInBlog/react-api/blob/main/LICENSE)
 
 A lightweight, zero-dependency, and fully-typed TypeScript client for the [DropInBlog API](https://dropinblog.readme.io/reference/api-reference). This client can be used in any JavaScript or TypeScript project, both on the server (Node.js) and in the browser.
 
@@ -9,18 +9,18 @@ It includes a simple in-memory cache to reduce redundant requests and improve pe
 
 ## Features
 
-- ✅ Fully typed with TypeScript
-- ✅ Works in Node.js and the browser
-- ✅ Zero dependencies
-- ✅ Built-in configurable caching
-- ✅ Simple and intuitive API
+- Fully typed with TypeScript
+- Works in Node.js and the browser
+- Zero dependencies
+- Built-in configurable caching
+- Simple and intuitive API
 
 ## Installation
 
 You can install the package using npm, yarn, or pnpm:
 
 ```bash
-npm install @dropinblog/dropinblog-api-client
+npm install @dropinblog/api-client
 ```
 
 ## Quick Start
@@ -28,7 +28,7 @@ npm install @dropinblog/dropinblog-api-client
 First, you'll need your DropInBlog **Blog ID** and an **API Token**. You can find these in your DropInBlog account settings.
 
 ```typescript
-import DibApi from '@dropinblog/dropinblog-api-client';
+import DibApi from '@dropinblog/api-client';
 
 // Initialize the client
 const dibApi = new DibApi('YOUR_API_TOKEN', 'YOUR_BLOG_ID');
