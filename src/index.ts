@@ -1,6 +1,9 @@
 export type APIData = {
-  body_html?: string;
-  head_data?: Record<string, string>;
+  body_html?: string | undefined;
+  head_data?: {
+    css?: string | undefined;
+    schema?: string | undefined;
+  };
   content_type?: string;
   slug?: string;
   sitemap?: string;
