@@ -1,6 +1,6 @@
 {
   "name": "@dropinblog/api-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A TypeScript client for the DropInBlog API",
   "homepage": "https://github.com/DropInBlog/api-client#readme",
   "main": "dist/index.js",
