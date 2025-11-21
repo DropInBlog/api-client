@@ -59,7 +59,7 @@ Creates a new API client instance.
 
 ### Fetching Content
 
-All fetch methods return a `Promise<APIData>`.
+All fetch methods return a `Promise<DropInBlogData>`.
 
 #### `fetchMainList({ pagination? })`
 

@@ -1,22 +1,21 @@
-export type APIData = {
-  body_html?: string | undefined;
-  head_data?: {
-    css?: string | undefined;
-    schema?: string | undefined;
-  };
-  content_type?: string;
-  slug?: string;
-  sitemap?: string;
-  feed?: string;
-};
+/**
+ * The shape of the data object returned by the DropInBlog API.
+ */
+export interface DropInBlogData {
+  head_html: string;
+  body_html: string;
+}
 
-type APIResponse = {
-  code: number;
-  message: string;
-  data: APIData;
-  locale: string;
+/**
+ * The full response shape from the DropInBlog API.
+ */
+export interface DropInBlogResponse {
   success: boolean;
-};
+  code: number;
+  locale: string;
+  message: string;
+  data: DropInBlogData;
+}
 
 type CacheEntry = {
   data: unknown;
@@ -80,7 +79,7 @@ export default class DibApi {
     if (res.ok) {
       const dataToReturn = options.returnFullResponse
         ? (jsonResponse as T)
-        : ((jsonResponse as APIResponse).data as T);
+        : ((jsonResponse as DropInBlogResponse).data as T);
 
       // Store in cache
       this.cache.set(url, { data: dataToReturn, timestamp: Date.now() });
@@ -88,7 +87,7 @@ export default class DibApi {
     }
 
     throw new Error(
-      (jsonResponse as APIResponse).message || 'API request failed'
+      (jsonResponse as DropInBlogResponse).message || 'API request failed'
     );
   }
 
@@ -107,11 +106,11 @@ export default class DibApi {
    * Fetches the main list of blog posts, with optional pagination.
    * @param {{ pagination?: string }} [options={}] - The options for fetching the main list.
    * @param {string} [options.pagination] - The page number for pagination.
-   * @returns {Promise<APIData>} A promise that resolves with the blog post list data.
+   * @returns {Promise<DropInBlogData>} A promise that resolves with the blog post list data.
    */
   fetchMainList = async ({
     pagination,
-  }: { pagination?: string } = {}): Promise<APIData> => {
+  }: { pagination?: string } = {}): Promise<DropInBlogData> => {
     try {
       const url = `https://api.dropinblog.com/v2/blog/${
         this.blogId
@@ -129,9 +128,9 @@ export default class DibApi {
    * Fetches a single blog post by its slug.
    * @param {{ slug: string }} options - The options for fetching a post.
    * @param {string} options.slug - The slug of the post to fetch.
-   * @returns {Promise<APIData>} A promise that resolves with the post data.
+   * @returns {Promise<DropInBlogData>} A promise that resolves with the post data.
    */
-  fetchPost = async ({ slug }: { slug: string }): Promise<APIData> => {
+  fetchPost = async ({ slug }: { slug: string }): Promise<DropInBlogData> => {
     try {
       const url = `https://api.dropinblog.com/v2/blog/${this.blogId}/rendered/post/${slug}?fields=head_data%2Cbody_html`;
       return await this._fetchAndProcess(url);
@@ -146,7 +145,7 @@ export default class DibApi {
    * @param {{ slug: string, pagination?: string }} options - The options for fetching category posts.
    * @param {string} options.slug - The slug of the category.
    * @param {string} [options.pagination] - The page number for pagination.
-   * @returns {Promise<APIData>} A promise that resolves with the category posts data.
+   * @returns {Promise<DropInBlogData>} A promise that resolves with the category posts data.
    */
   fetchCategories = async ({
     slug,
@@ -154,7 +153,7 @@ export default class DibApi {
   }: {
     slug: string;
     pagination?: string;
-  }): Promise<APIData> => {
+  }): Promise<DropInBlogData> => {
     try {
       const url = `https://api.dropinblog.com/v2/blog/${
         this.blogId
@@ -173,7 +172,7 @@ export default class DibApi {
    * @param {{ slug: string, pagination?: string }} options - The options for fetching author posts.
    * @param {string} options.slug - The slug of the author.
    * @param {string} [options.pagination] - The page number for pagination.
-   * @returns {Promise<APIData>} A promise that resolves with the author posts data.
+   * @returns {Promise<DropInBlogData>} A promise that resolves with the author posts data.
    */
   fetchAuthor = async ({
     slug,
@@ -181,7 +180,7 @@ export default class DibApi {
   }: {
     slug: string;
     pagination?: string;
-  }): Promise<APIData> => {
+  }): Promise<DropInBlogData> => {
     try {
       const url = `https://api.dropinblog.com/v2/blog/${
         this.blogId
@@ -197,10 +196,10 @@ export default class DibApi {
 
   /**
    * Fetches the sitemap for the blog.
-   * @returns {Promise<APIData>} A promise that resolves with the sitemap data.
+   * @returns {Promise<DropInBlogData>} A promise that resolves with the sitemap data.
    */
-  fetchSitemap = async (): Promise<APIData> => {
-    // Type remains APIData, now it will correctly return APIData
+  fetchSitemap = async (): Promise<DropInBlogData> => {
+    // Type remains DropInBlogData, now it will correctly return DropInBlogData
     try {
       const url = `https://api.dropinblog.com/v2/blog/${this.blogId}/rendered/sitemap`;
       return await this._fetchAndProcess(url); // Removed returnFullResponse: true
@@ -212,9 +211,9 @@ export default class DibApi {
 
   /**
    * Fetches the main RSS feed for the blog.
-   * @returns {Promise<APIData>} A promise that resolves with the feed data.
+   * @returns {Promise<DropInBlogData>} A promise that resolves with the feed data.
    */
-  fetchBlogFeed = async (): Promise<APIData> => {
+  fetchBlogFeed = async (): Promise<DropInBlogData> => {
     try {
       const url = `https://api.dropinblog.com/v2/blog/${this.blogId}/rendered/feed`;
       return await this._fetchAndProcess(url);
@@ -228,9 +227,13 @@ export default class DibApi {
    * Fetches the RSS feed for a specific category.
    * @param {{ slug: string }} options - The options for fetching the category feed.
    * @param {string} options.slug - The slug of the category.
-   * @returns {Promise<APIData>} A promise that resolves with the category feed data.
+   * @returns {Promise<DropInBlogData>} A promise that resolves with the category feed data.
    */
-  fetchCategoryFeed = async ({ slug }: { slug: string }): Promise<APIData> => {
+  fetchCategoryFeed = async ({
+    slug,
+  }: {
+    slug: string;
+  }): Promise<DropInBlogData> => {
     try {
       const url = `https://api.dropinblog.com/v2/blog/${this.blogId}/rendered/feed/category/${slug}`;
       return await this._fetchAndProcess(url);
@@ -244,9 +247,13 @@ export default class DibApi {
    * Fetches the RSS feed for a specific author.
    * @param {{ slug: string }} options - The options for fetching the author feed.
    * @param {string} options.slug - The slug of the author.
-   * @returns {Promise<APIData>} A promise that resolves with the author feed data.
+   * @returns {Promise<DropInBlogData>} A promise that resolves with the author feed data.
    */
-  fetchAuthorFeed = async ({ slug }: { slug: string }): Promise<APIData> => {
+  fetchAuthorFeed = async ({
+    slug,
+  }: {
+    slug: string;
+  }): Promise<DropInBlogData> => {
     try {
       const url = `https://api.dropinblog.com/v2/blog/${this.blogId}/rendered/feed/author/${slug}`;
       return await this._fetchAndProcess(url);
