@@ -1,10 +1,29 @@
 /**
  * The shape of the data object returned by the DropInBlog API.
  */
-export interface DropInBlogData {
-  head_html: string;
-  body_html: string;
-}
+export type DropInBlogData = {
+  body_html?: string;
+  head_html?: string;
+  head_data?: {
+    title: string;
+    rss_url: string;
+    seo_url_next: string;
+    css: string;
+  };
+  head_items?: {
+    title: string;
+    'og:title': string;
+    'twitter:title': string;
+    rss_rl: string;
+    seo_url_next: string;
+    js: string;
+    css: string;
+  };
+  content_type?: string;
+  slug?: string;
+  sitemap?: string;
+  feed?: string;
+};
 
 /**
  * The full response shape from the DropInBlog API.
@@ -27,6 +46,12 @@ export default class DibApi {
   private blogId: string;
   private cache: Map<string, CacheEntry>;
   private cacheTTL: number; // in milliseconds
+
+  /**
+   * Fields to request from the API.
+   * @documentation https://dropinblog.readme.io/reference/main-list#query-params
+   */
+  private fields: string = ['head_data', 'head_html', 'body_html'].join('%2C');
 
   /**
    * Creates an instance of the DibApi client.
@@ -114,9 +139,9 @@ export default class DibApi {
     try {
       const url = `https://api.dropinblog.com/v2/blog/${
         this.blogId
-      }/rendered/list?${
-        pagination ? `page=${pagination}&` : ''
-      }fields=head_data%2Cbody_html`;
+      }/rendered/list?${pagination ? `page=${pagination}&` : ''}fields=${
+        this.fields
+      }`;
       return await this._fetchAndProcess(url);
     } catch (error) {
       console.error('Error fetching main list:', (error as Error).message);
@@ -132,7 +157,7 @@ export default class DibApi {
    */
   fetchPost = async ({ slug }: { slug: string }): Promise<DropInBlogData> => {
     try {
-      const url = `https://api.dropinblog.com/v2/blog/${this.blogId}/rendered/post/${slug}?fields=head_data%2Cbody_html`;
+      const url = `https://api.dropinblog.com/v2/blog/${this.blogId}/rendered/post/${slug}?fields=${this.fields}`;
       return await this._fetchAndProcess(url);
     } catch (error) {
       console.error('Error fetching post:', (error as Error).message);
@@ -159,7 +184,7 @@ export default class DibApi {
         this.blogId
       }/rendered/list/category/${slug}?${
         pagination ? `page=${pagination}&` : ''
-      }fields=head_data%2Cbody_html`;
+      }fields=${this.fields}`;
       return await this._fetchAndProcess(url);
     } catch (error) {
       console.error('Error fetching categories:', (error as Error).message);
@@ -186,7 +211,7 @@ export default class DibApi {
         this.blogId
       }/rendered/list/author/${slug}?${
         pagination ? `page=${pagination}&` : ''
-      }fields=head_data%2Cbody_html`;
+      }fields=${this.fields}`;
       return await this._fetchAndProcess(url);
     } catch (error) {
       console.error('Error fetching author:', (error as Error).message);
