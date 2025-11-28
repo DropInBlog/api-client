@@ -9,6 +9,7 @@ export type DropInBlogData = {
     rss_url: string;
     seo_url_next: string;
     css: string;
+    js: string;
   };
   head_items?: {
     title: string;
