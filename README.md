@@ -1,5 +1,7 @@
 # DropInBlog API Client
 
+> **⚠️ DEPRECATED:** This package is deprecated. Please use [@dropinblog/react-core](https://github.com/DropInBlog/react-core) instead.
+
 [![NPM version](https://img.shields.io/npm/v/@dropinblog/api-client.svg)](https://www.npmjs.com/package/@dropinblog/api-client)
 [![License](https://img.shields.io/npm/l/@dropinblog/api-client.svg)](https://github.com/DropInBlog/react-api/blob/main/LICENSE)
 
